@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bs6wc0p2y5g84"]
+
+[ext_resource type="Script" uid="uid://cv1esqud26u7" path="res://soap.gd" id="1_x14g3"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x14g3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8w5mh"]
+
+[node name="Soap" type="Node3D"]
+script = ExtResource("1_x14g3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.725393, 0.725289, -0.95718)
+mesh = SubResource("CylinderMesh_x14g3")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0970099, 0.0359656, -0.00585911)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827236, 0.737901, 1.6311)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.98872, 1.15111, -0.370824)
+shape = SubResource("BoxShape3D_8w5mh")

@@ -7,4 +7,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125458, 1.6736, 0.161124)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Arena" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0016607, 0.00115514, 0.00278497)
+
+[node name="Drain" type="Area3D" parent="."]
