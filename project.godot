@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Soapocalypse"
-run/main_scene="uid://dw6nyef13evkh"
+run/main_scene="uid://bhh4v85pw26bp"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
