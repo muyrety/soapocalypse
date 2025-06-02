@@ -1,39 +1,30 @@
 extends CharacterBody3D
 
-@export var shrink_rate := 0.05
-@export var move_speed := 5.0
-
-var shrink_timer := 0.0
-var is_dead := false
+@export var speed = 10
+@export var fall_acceleration = 75
+var target_velocity = Vector3.ZERO
 
 func _physics_process(delta):
-	if is_dead:
-		return
+	if not is_on_floor():
+		target_velocity.y -= fall_acceleration * delta
+
+	# Get input direction (WASD / Arrow keys)
+	var direction = Vector3.ZERO
+	if Input.is_action_pressed("move_right"):
+		direction.x += 1
+	if Input.is_action_pressed("move_left"):
+		direction.x -= 1
+	if Input.is_action_pressed("move_back"):
+		direction.z += 1
+	if Input.is_action_pressed("move_forward"):
+		direction.z -= 1
 	
-	var input = Vector2(
-		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	)
+	if direction != Vector3.ZERO:
+		direction = direction.normalized()
+		
+	target_velocity.x = direction.x * speed
+	target_velocity.z = direction.z * speed
 	
-	var cam_basis = get_viewport().get_camera_3d().global_transform.basis
-	var move_dir = (cam_basis.x * input.x + cam_basis.z * input.y).normalized()
-	
-	velocity = move_dir * move_speed
+	velocity = target_velocity
+
 	move_and_slide()
-
-	# Shrink logic
-	shrink_timer += delta
-	if shrink_timer > 1.0:
-		shrink()
-		shrink_timer = 0.0
-
-func shrink():
-	scale *= 0.98
-	if scale.x < 0.2:
-		die()
-
-func die():
-	is_dead = true
-	set_physics_process(false)
-	# Signal to main scene
-	get_tree().call_group("game", "on_player_died")

@@ -1,47 +1,78 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhh4v85pw26bp"]
+[gd_scene load_steps=6 format=3 uid="uid://bhh4v85pw26bp"]
 
 [ext_resource type="PackedScene" uid="uid://bs6wc0p2y5g84" path="res://soap.tscn" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://dw6nyef13evkh" path="res://arena.tscn" id="2_h2yge"]
-[ext_resource type="Script" uid="uid://b2l8p3i4l764" path="res://camera_3d.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://whnw5j7j3ayn" path="res://main.gd" id="1_h2yge"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+albedo_color = Color(0.473236, 0.986736, 0.88438, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_ig7tw")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
+size = Vector3(100, 1, 100)
 
 [node name="Main" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125458, 1.6736, 0.161124)
+script = ExtResource("1_h2yge")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.996306, -0.085869, -2.21623e-11, 0.0362545, 0.420648, 0.906499, -0.0778402, -0.903151, 0.422207, -0.0471344, 48.478, -0.133846)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 50, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Area" type="StaticBody3D" parent="."]
 
-[node name="Arena" parent="." instance=ExtResource("2_h2yge")]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area"]
+mesh = SubResource("BoxMesh_0xm2m")
 
-[node name="Soap" parent="." instance=ExtResource("1_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0844154, 0.0921173, -0.0368843)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area"]
+shape = SubResource("BoxShape3D_h2yge")
 
-[node name="CameraPivot" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -6)
-current = true
-script = ExtResource("3_h2yge")
-follow_target = NodePath("../../Soap")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="GameStartBackground" type="ColorRect" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 0.356863, 1)
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
+[node name="StartButton" type="Button" parent="UserInterface/GameStartBackground"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -15.5
+offset_right = 48.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game"
+
+[node name="Label" type="Label" parent="UserInterface/GameStartBackground"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -196.5
+offset_right = 196.5
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(5.77569e-07, 0, 0.801783, 1)
+theme_override_font_sizes/font_size = 60
 text = "Soapocalypse"
 
-[node name="StartButton" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-text = "Start Game"
+[node name="Soap" parent="." instance=ExtResource("1_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[connection signal="pressed" from="UserInterface/GameStartBackground/StartButton" to="." method="_on_start_button_pressed"]
